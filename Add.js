@@ -1,58 +1,46 @@
 import { Alert, Button, StyleSheet, Text, TextInput, View } from 'react-native'
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 
-const Add = () => {
+const Add = (props) => {
 
-   const [tenSP, settenSP] = useState('')
-   const [gia, setgia] = useState(0)
+  const [name, setname] = useState('')
+  const [ngaysinh, setngaysinh] = useState('')
+  const [gioitinh, setgioitinh] = useState('')
 
-   const SavePro = () => {
-    let objSP = {name : tenSP, gia: gia}
-    let url_api = 'https://65bba22852189914b5bcb4f3.mockapi.io/datadayroi'
-   
-    fetch(url_api, {
-    method: 'POST',
-    headers: {
+  const ADDD = () => {
+    let API = 'http://192.168.0.105:3000/dulieu'
+
+    let obj = {name,gioitinh,ngaysinh}
+
+    fetch(API, {
+  method: 'POST',
+  headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    },
-    body: JSON.stringify( objSP )
-    })
-    .then ( (res)=> {
-    if(res.status == 201)
-    Alert.alert("Them Thanh Cong")
-    })
-    .catch ((ex)=>{
-    console.log(ex);
-    })
-    
-    }
+  },
+  body: JSON.stringify(obj),
+}).then((res)=>{
+  if(res.status == 201){
+    Alert.alert('them thanh cong')
+    props.navigation.goBack()
+  }
+}).catch((ex)=>{
+  console.log(ex);
+})
+  }
+
   return (
-    <View style={styles.container}>
-      <Text style={{textAlign: 'center',fontWeight: 'bold',fontSize:18, marginTop: 50,}}>Add</Text>
-      <TextInput style={styles.input} placeholder='Ten Sp' onChangeText={ (txt)=>{ settenSP (txt) }} />
-      <TextInput style={styles.input} placeholder='Gia' onChangeText={ (txt)=>{ setgia (txt) }} />
-      <Button title='Save' onPress={SavePro} />
+    <View>
+      <Text>Add</Text>
+
+    <TextInput placeholder='name'  onChangeText={(txt)=>{setname(txt)}}/>
+    <TextInput placeholder='gioitinh'  onChangeText={(txt)=>{setgioitinh(txt)}}/>
+    <TextInput placeholder='ngaysinh' onChangeText={(txt)=>{setngaysinh(txt)}} />
+    <Button title='Add' onPress={ADDD} />
     </View>
   )
 }
 
 export default Add
 
-const styles = StyleSheet.create({
-    container : {
-        flex: 1,
-        backgroundColor: 'pink',
-        padding: 10,
-       
-    },
-    input:{
-      width: 350,
-      height: 50,
-      borderRadius: 10,
-      borderWidth: 2,
-      margin: 10,
-      alignContent: 'center',
-      alignSelf: 'center'
-  },
-})
+const styles = StyleSheet.create({})
